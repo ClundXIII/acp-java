@@ -41,37 +41,38 @@ public abstract class AbstractDbTable {
 			switch (e.getValue()) {
 
 			case STRING:
-				sb.append(e.getKey() + " VARCHAR(8192), ");
+				sb.append(e.getKey() + " VARCHAR(8192)");
 				break;
 
 			case BLOB:
-				sb.append(e.getKey() + " BLOB, ");
+				sb.append(e.getKey() + " BLOB");
 				break;
 
 			case INTEGER:
-				sb.append(e.getKey() + " INTEGER, ");
+				sb.append(e.getKey() + " INTEGER");
 				break;
 
 			case REAL:
-				sb.append(e.getKey() + " REAL, ");
+				sb.append(e.getKey() + " REAL");
 				break;
 
 			case TIMESTAMP:
-				sb.append(e.getKey() + " LONG, ");
+				sb.append(e.getKey() + " LONG");
 				break;
 
 			default:
 				throw new RuntimeException("unknown value type in AbstractDbTable::createTable");
 
 			}
+
+			if (e.getKey().equals("id")) {
+				sb.append(" auto_increment ");
+			}
+			sb.append(", ");
 		}
 
 		sb.append(" PRIMARY KEY ( id ));");
 
 		dbCon.executeUpdatePreparedQuery(new ArrayList<>(), sb.toString());
-
-		dbCon.executeUpdatePreparedQuery(new ArrayList<>(),
-				"ALTER TABLE " + t.getTableName() + " MODIFY COLUMN id INT auto_increment");
-
 	}
 }
